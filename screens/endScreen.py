@@ -4,14 +4,27 @@ class EndScreen(tk.Frame):
     def __init__(self,master):
         super().__init__(bg="#ECF4D6")
         self.master = master
+        self.title = self.master.endTitle
         self.message = self.master.endMessage
         self.create_widgets()
 
     def create_widgets(self):
-        tk.Label(self,text=self.message,font=("Helvetica", 15,"bold"),bg="#ECF4D6").pack()
-        tk.Button(self,text="Play Again",command=self.play_again).pack()
-        tk.Button(self,text="Quit",command=self.quit).pack()
+        title_label = tk.Label(self, text=self.title, font=("Helvetica", 20, "bold"), bg="#ECF4D6")
+        title_label.pack(pady=(20, 10))
+
+        message_label = tk.Label(self, text=self.message, font=("Helvetica", 15, "bold"), bg="#ECF4D6")
+        message_label.pack(pady=10)
+
+        play_again_button = tk.Button(self, text="Play Again", command=self.play_again, bg="#4CAF50", fg="white", padx=20, pady=10)
+        play_again_button.pack(pady=10)
+
+        quit_button = tk.Button(self, text="Quit", command=self.quit, bg="#f44336", fg="white", padx=20, pady=10)
+        quit_button.pack(pady=10)
+
+        # Configure pack to expand and fill both X and Y directions
+        self.pack(expand=True, fill="both")
 
     def play_again(self):
+        self.master.endTitle = None
         self.master.endMessage = None
         self.master.switch_frame(mainScreen.MainScreen)

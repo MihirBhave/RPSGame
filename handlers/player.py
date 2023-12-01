@@ -5,7 +5,6 @@ import threading
 from tkinter import ttk
 import screens.endScreen as EndScreen
 
-HOST = "192.168.189.1"
 PORT = 5555
 
 p_moves = {"r": 0, "p": 1, "s": 2}
@@ -19,8 +18,9 @@ class PlayerHandler:
         self.labels = frame.labels
         self.buttons = frame.buttons
         self.notif_label = ttk.Label(
-            self.frame, text="", font=("Helvetica", 20, "bold"), foreground="red"
+            self.frame, text="Pairing", font=("Helvetica", 20, "bold"), foreground="red"
         )
+        self.notif_label.grid(row=1, column=2)
         self.player_move = None
         self.opponent_move = None
 
@@ -30,8 +30,8 @@ class PlayerHandler:
     def connect(self):
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
-            self.client.connect((HOST, PORT))
-
+            self.client.connect((self.master.HOST, PORT))
+            self.client.send("Connected!".encode()) # Send this first message to differentiate from detect server connection.
             self.stop_event = threading.Event()
             self.receive_thread = threading.Thread(target=self.receive)
             self.receive_thread.start()
@@ -58,19 +58,24 @@ class PlayerHandler:
                 msg_type = data.split(";")[0]
                 
                 if msg_type == "FIRST":
+                    self.player_id = data.split(";")[1]
                     self.master.after(0, self.toggle_buttons, tk.NORMAL)
                     self.master.after(0, self.show_notif, "Start!")
 
                 elif msg_type == "UPDATE":
                     move = data.split(";")[1]
-                    print("Opponent has played!")
+                    #print("Opponent has played!")
                     self.master.after(0, self.update,move, True)
 
                 elif msg_type == "FORFEIT":
                     # The other player has disconnected.
+                    self.master.endMessage = "Opponent has disconnected!"
+                    self.client.close()
+                    self.master.switch_frame(EndScreen.EndScreen)
                     break
+
             except Exception as e:
-                print(e)
+                #print(e)
                 self.stop_event.set()  # Stop the thread.
                 break
 
@@ -150,8 +155,20 @@ class PlayerHandler:
     def show_notif(self, msg):
         self.notif_label.config(text=msg)
         self.notif_label.grid(row=1, column=2)
-        self.master.after(500, self.notif_label.grid_remove)
+        try:
+            self.master.after(500, self.hide_notif)
+
+        except tk.TclError as e:
+            pass
     
+    def hide_notif(self):
+        try:
+            self.notif_label.grid_remove()
+
+        except tk.TclError as e:
+            # Ignore it as it occurs when the frame is switched.
+            pass
+
     def reset(self):
         self.player_move = None
         self.opponent_move = None
@@ -159,12 +176,26 @@ class PlayerHandler:
         self.labels[1].config(image=self.frame.blankImg)
         self.toggle_buttons(tk.NORMAL)
         self.master.after(0, self.show_notif, "Play!")
+        self.master.after(200, self.check_end) #Give a slight delay.
 
     def check_end(self):
+        end = False
+
         if points[0] == 5:
-            self.master.endMessage = "You Won!"
+            self.master.endTtle = "You Won!"
+            self.master.endMessage = f"You won against your opponent by {points[0]-{points[1]}} ! "
+            end = True
             self.master.switch_frame(EndScreen.EndScreen)
         elif points[1] == 5:
-            self.master.endMessage = "You Lost!"
-            self.master.switch_frame(EndScreen.EndScreen)   
+            self.master.endTitle = "You Lost!"
+            self.master.endMessage = f"You lost against your opponent by {points[0]-{points[1]}} ! "
+            end = True
+            self.master.switch_frame(EndScreen.EndScreen)
+
+        if end == True and self.player_id == "1":
+            self.send("END;") # Let the server know that the game is over.
+
+
             
+
+

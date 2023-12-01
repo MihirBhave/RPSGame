@@ -2,9 +2,9 @@ import socket
 from _thread import *
 import pickle
 
-HOST = socket.gethostbyname(socket.gethostname())
+HOST = "0.0.0.0"
 PORT = 5555
-print(f"Connect to {HOST}:{PORT} !")
+#print(f"Connect to {HOST}:{PORT} !")
 
 connected = set()
 games = {}
@@ -23,14 +23,19 @@ def client_thread(connection, p_id, game_id):
 
     '''
     Message Receiving Format:
+    PING
+    CONNECTED
     MOVE;move
-    QUIT;
     END;
     '''
 
     # Send the player id to the client only after the opponent has connected.
-    while not games[game_id][p_id]["paired"]:
-        continue
+    try:
+        while not games[game_id][p_id]["paired"]:
+            continue
+
+    except Exception:
+        pass
 
     connection.send(f"FIRST;{p_id+1}".encode())
 
@@ -39,18 +44,15 @@ def client_thread(connection, p_id, game_id):
             data = connection.recv(2048).decode()
             if not data:
                 # The client has disconnected.
-                pass
+                break
 
             if game_id in games:
                 game = games[game_id]
-                #print(f"Player {p_id+1}'s move at the beginning of the loop: {game[p_id]['move']}")
-                #print(f"Player {p_id+1} has sent: {data}")
                 msg_type = data.split(";")[0]
-                
+
                 if msg_type == "MOVE":
                     move = data.split(";")[1]
                     game[p_id]["move"] = move
-                    #print(f"For Player ${p_id+1}, opponent's move is: ",game[opp_id]["move"])
                     if game[opp_id]["move"] is not None:
                         # Both the players have made their moves.
                         # Send the moves to both the players.
@@ -79,11 +81,11 @@ def client_thread(connection, p_id, game_id):
             print(e)
             break
 
-    print(f"[-] Player {p_id} has disconnected!")
+    print(f"[-] Player {p_id+1} has disconnected!")
     try:
         if end_reason == None:
             # The player has disconnected.
-            games[game_id][opp_id]["conn"].send("QUIT;".encode())
+            games[game_id][opp_id]["conn"].send("FORFEIT;".encode())
         else:
             print("[+] Game Over!")
         del games[game_id]
@@ -105,7 +107,15 @@ print("[+] Server has started!")
 
 while True:
     connection, address= s.accept()
+
+    first_msg = connection.recv(2048).decode()
+    if(first_msg == "PING"):
+        # This was by the server detector, so ignore it.
+        connection.close()
+        continue
+
     print(f'[+] Connected to {address} !')
+
     connected_ids += 1
     game_id = (connected_ids - 1) // 2
     p = 0 # Player Display ID

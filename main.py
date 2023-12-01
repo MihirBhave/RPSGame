@@ -1,5 +1,6 @@
 import tkinter as tk
 import screens.mainScreen as mainScreen
+import utils.ip_util as ip_util
 
 class RPSApp(tk.Tk):
     def __init__(self):
@@ -7,8 +8,10 @@ class RPSApp(tk.Tk):
         self.geometry("1000x600")
         self.resizable(False, False)
         self.title("RPS Game")
+        self.HOST = ip_util.detect_server()
         self.current_frame = None
         self.endMessage = None
+        self.endTitle = None
         self.switch_frame(mainScreen.MainScreen)
 
     def switch_frame(self, n_frame):
@@ -16,12 +19,8 @@ class RPSApp(tk.Tk):
         if self.current_frame is not None:
             self.current_frame.destroy()  # Destroy the current frame
         self.current_frame = new_frame
-        self.current_frame.pack() # Display the new frame by packing it
-
+        self.current_frame.pack() # Display the new frame by packing it    
     
-    
-
-
 
 app = RPSApp()
 app.mainloop()

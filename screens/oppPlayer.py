@@ -6,9 +6,9 @@ from handlers.player import PlayerHandler
 
 class PlayVsPlayer(tk.Frame):
     def __init__(self, master=None):
-        super().__init__(master, bg="#74c7b8")
+        super().__init__(master, bg="#ECF4D6")
         self.master = master
-        self.pack()
+        self.pack(fill=tk.BOTH, expand=True)
         self.create_widgets()
         self.handler = PlayerHandler(self.master, self)
 

@@ -97,10 +97,12 @@ class BotGameHandler:
         self.master.after(700, self.check_end)
     def check_end(self):
         if self.points[0] == 5:
-            self.master.endMessage = "You Won!"
+            self.master.endTitle = "You Won!"
+            self.master.endMessage = f"You won against the computer by {self.points[0]}-{self.points[1]} !"
             self.master.switch_frame(EndScreen.EndScreen)
         elif self.points[1] == 5:
-            self.master.endMessage = "You Lost!"
+            self.master.endTitle = "You Lost!"
+            self.master.endMessage = f"You lost against the computer by {self.points[0]}-{self.points[1]} !"
             self.master.switch_frame(EndScreen.EndScreen)    
 
     def show_notif(self, message):
