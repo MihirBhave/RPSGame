@@ -183,12 +183,12 @@ class PlayerHandler:
 
         if points[0] == 5:
             self.master.endTtle = "You Won!"
-            self.master.endMessage = f"You won against your opponent by {points[0]-{points[1]}} ! "
+            self.master.endMessage = f"You won against your opponent by {points[0]}-{points[1]}! "
             end = True
             self.master.switch_frame(EndScreen.EndScreen)
         elif points[1] == 5:
             self.master.endTitle = "You Lost!"
-            self.master.endMessage = f"You lost against your opponent by {points[0]-{points[1]}} ! "
+            self.master.endMessage = f"You lost against your opponent by {points[0]}-{points[1]} ! "
             end = True
             self.master.switch_frame(EndScreen.EndScreen)
 
