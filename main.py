@@ -1,5 +1,5 @@
 import tkinter as tk
-import screens.mainScreen as mainScreen
+import screens.authScreen as authScreen
 import utils.ip_util as ip_util
 
 class RPSApp(tk.Tk):
@@ -12,7 +12,9 @@ class RPSApp(tk.Tk):
         self.current_frame = None
         self.endMessage = None
         self.endTitle = None
-        self.switch_frame(mainScreen.MainScreen)
+        self.username = None
+        self.oppName = None
+        self.switch_frame(authScreen.AuthScreen)
 
     def switch_frame(self, n_frame):
         new_frame = n_frame(self)

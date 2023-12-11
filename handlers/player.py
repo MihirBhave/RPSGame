@@ -31,7 +31,7 @@ class PlayerHandler:
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
             self.client.connect((self.master.HOST, PORT))
-            self.client.send("Connected!".encode()) # Send this first message to differentiate from detect server connection.
+            self.client.send(f"{self.master.username}".encode()) # Send this first message to differentiate from detect server connection. ( Username)
             self.stop_event = threading.Event()
             self.receive_thread = threading.Thread(target=self.receive)
             self.receive_thread.start()
@@ -59,6 +59,8 @@ class PlayerHandler:
                 
                 if msg_type == "FIRST":
                     self.player_id = data.split(";")[1]
+                    self.master.oppName = data.split(";")[2]
+                    self.frame.oppLabel.config(text=self.master.oppName)
                     self.master.after(0, self.toggle_buttons, tk.NORMAL)
                     self.master.after(0, self.show_notif, "Start!")
 

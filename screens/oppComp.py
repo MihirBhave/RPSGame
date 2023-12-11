@@ -37,7 +37,7 @@ class PlayVsBot(tk.Frame):
         player_label.grid(row=1,column=0)
         computer_label.grid(row=1,column=4)
         
-        ttk.Label(self,text="Player",font=("Helvetica", 15,"bold")).grid(row=0,column=1)
+        ttk.Label(self,text=f"{self.master.username}",font=("Helvetica", 15,"bold")).grid(row=0,column=1)
         ttk.Label(self,text="Computer",font=("Helvetica", 15,"bold")).grid(row=0,column=3)
         ttk.Label(self,text="SCORE",font=("Helvetica", 15,"bold")).grid(row=0,column=2)
         self.notif_label = ttk.Label(self,text="",font=("Arial", 20,"bold"), foreground="red")

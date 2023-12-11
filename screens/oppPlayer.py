@@ -36,8 +36,9 @@ class PlayVsPlayer(tk.Frame):
         player_label.grid(row=1,column=0)
         computer_label.grid(row=1,column=4)
         
-        ttk.Label(self,text="Player",font=("Helvetica", 15,"bold")).grid(row=0,column=1)
-        ttk.Label(self,text="Opponent",font=("Helvetica", 15,"bold")).grid(row=0,column=3)
+        ttk.Label(self,text=f"{self.master.username}",font=("Helvetica", 15,"bold")).grid(row=0,column=1)
+        opp_name = ttk.Label(self,text="Opponent",font=("Helvetica", 15,"bold"))
+        opp_name.grid(row=0,column=3)
         ttk.Label(self,text="SCORE",font=("Helvetica", 15,"bold")).grid(row=0,column=2)
 
         player_score = ttk.Label(self, text="0", font=("Helvetica", 15,"bold"))
@@ -58,6 +59,7 @@ class PlayVsPlayer(tk.Frame):
         paperbtn.grid(row=2,column=2)
         scissorbtn.grid(row=2,column=3)
 
+        self.oppLabel = opp_name
         self.buttons = [rockbtn, paperbtn, scissorbtn]
 
    

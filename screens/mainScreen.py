@@ -15,14 +15,17 @@ class MainScreen(tk.Frame):
         style = ttk.Style()
         style.configure("TButton", font=("Helvetica", 12, "bold"), padding=10)
 
-        self.title_label = tk.Label(self, text="Welcome to Rock, Paper, Scissors!", font=("Helvetica", 16), bg="#74c7b8")
-        self.title_label.pack(side="top", pady=50)
+        welcome_label = tk.Label(self, text=f"Welcome, {self.master.username}!", font=("Helvetica", 16), bg="#3498db", fg="#ecf0f1")
+
+        #self.title_label = tk.Label(self, text="Welcome to Rock, Paper, Scissors!", font=("Helvetica", 16), bg="#74c7b8")
+        welcome_label.pack(side="top", pady=50)
 
         self.bot_button = ttk.Button(self, text="Play vs Bot", command=self.play_vs_bot, style="TButton")
         self.bot_button.pack(side="top", pady=50)
 
         self.player_button = ttk.Button(self, text="Play vs Player", command=self.play_vs_player, style="TButton")
         self.player_button.pack(side="top")
+
 
 
     def play_vs_bot(self):

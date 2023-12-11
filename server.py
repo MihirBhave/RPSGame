@@ -1,10 +1,8 @@
 import socket
 from _thread import *
-import pickle
 
 HOST = "0.0.0.0"
 PORT = 5555
-#print(f"Connect to {HOST}:{PORT} !")
 
 connected = set()
 games = {}
@@ -16,7 +14,7 @@ def client_thread(connection, p_id, game_id):
 
     '''
     Message Sending Format:
-    FIRST;player_id
+    FIRST;player_id;player_username
     FORFEIT;
     UPDATE;move
     '''
@@ -37,7 +35,7 @@ def client_thread(connection, p_id, game_id):
     except Exception:
         pass
 
-    connection.send(f"FIRST;{p_id+1}".encode())
+    connection.send(f"FIRST;{p_id+1};{games[game_id][opp_id]['username']}".encode())
 
     while True:
         try:
@@ -125,7 +123,8 @@ while True:
             0 : {
                 "move": None,
                 "paired": False,
-                "conn": connection
+                "conn": connection,
+                "username": first_msg
             }
         }
         print("[+] Creating a new game...")
@@ -134,7 +133,8 @@ while True:
         games[game_id][1] = {
             "move": None,
             "paired": True,
-            "conn": connection
+            "conn": connection,
+            "username": first_msg
         }
 
         games[game_id][0]["paired"] = True # Set the paired status of player1 to True
