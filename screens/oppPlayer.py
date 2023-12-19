@@ -6,7 +6,7 @@ from handlers.player import PlayerHandler
 
 class PlayVsPlayer(tk.Frame):
     def __init__(self, master=None):
-        super().__init__(master, bg="#ECF4D6")
+        super().__init__(master, bg="#05e8d5")
         self.master = master
         self.pack(fill=tk.BOTH, expand=True)
         self.create_widgets()
@@ -36,10 +36,10 @@ class PlayVsPlayer(tk.Frame):
         player_label.grid(row=1,column=0)
         computer_label.grid(row=1,column=4)
         
-        ttk.Label(self,text=f"{self.master.username}",font=("Helvetica", 15,"bold")).grid(row=0,column=1)
-        opp_name = ttk.Label(self,text="Opponent",font=("Helvetica", 15,"bold"))
+        ttk.Label(self,text=f"{self.master.username}",font=("Comic Sans MS", 15,"bold"), background="#05e8d5").grid(row=0,column=1)
+        opp_name = ttk.Label(self,text="Opponent",font=("Comic Sans MS", 15,"bold"), background="#05e8d5")
         opp_name.grid(row=0,column=3)
-        ttk.Label(self,text="SCORE",font=("Helvetica", 15,"bold")).grid(row=0,column=2)
+        ttk.Label(self,text="SCORE",font=("Comic Sans MS", 15,"bold"), background="#05e8d5").grid(row=0,column=2)
 
         player_score = ttk.Label(self, text="0", font=("Helvetica", 15,"bold"))
         computer_score = ttk.Label(self, text="0", font=("Helvetica", 15,"bold"))

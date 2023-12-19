@@ -6,7 +6,7 @@ from handlers.bot import BotGameHandler
 
 class PlayVsBot(tk.Frame):
     def __init__(self, master):
-        super().__init__(master, bg="#ECF4D6")
+        super().__init__(master, bg="#05e8d5")
         self.master = master
         self.pack(fill=tk.BOTH, expand=True)
         self.create_widgets()
@@ -37,9 +37,9 @@ class PlayVsBot(tk.Frame):
         player_label.grid(row=1,column=0)
         computer_label.grid(row=1,column=4)
         
-        ttk.Label(self,text=f"{self.master.username}",font=("Helvetica", 15,"bold")).grid(row=0,column=1)
-        ttk.Label(self,text="Computer",font=("Helvetica", 15,"bold")).grid(row=0,column=3)
-        ttk.Label(self,text="SCORE",font=("Helvetica", 15,"bold")).grid(row=0,column=2)
+        ttk.Label(self,text=f"{self.master.username}",font=("Comic Sans MS", 15), background="#05e8d5").grid(row=0,column=1)
+        ttk.Label(self,text="Computer",font=("Comic Sans MS", 15), background="#05e8d5").grid(row=0,column=3)
+        ttk.Label(self,text="SCORE",font=("Comic Sans MS", 15), background="#05e8d5").grid(row=0,column=2)
         self.notif_label = ttk.Label(self,text="",font=("Arial", 20,"bold"), foreground="red")
 
         player_score = ttk.Label(self, text="0", font=("Helvetica", 15,"bold"))
@@ -61,6 +61,10 @@ class PlayVsBot(tk.Frame):
         scissorbtn.grid(row=2,column=3)
 
         self.buttons = [rockbtn, paperbtn, scissorbtn]
+
+
+
+        
 
 
 
